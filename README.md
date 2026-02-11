@@ -36,30 +36,30 @@ The chatbot uses a straightforward RAG architecture:
 
 ### Key Components
 
-**Transcript Scraper** (`office_transcript_scraper.py`)
+**Transcript Scraper**
 - Handles pagination across forum pages
 - Parses episode metadata from page titles
 - Cleans and normalizes transcript formatting
 - Saves files with episode names for easy identification
 
-**Format Converter** (`convert_transcript_format.py`)
+**Format Converter** 
 - Converts various transcript formats to a standardized structure
 - Handles multi-line dialogues and stage directions
 - Preserves character attributions and scene context
 
-**RAG Processor** (`transcript_to_rag.py`)
+**RAG Processor** 
 - Parses transcript files into structured JSON/CSV
 - Normalizes character names (handles typos and variations)
 - Preserves stage directions for richer character context
 - Generates statistics on dialogue distribution
 
-**ChromaDB Loader** (`load_data_to_chromadb.py`)
+**ChromaDB Loader** 
 - Batch processing of dialogue data
 - Generates embeddings via OpenAI API
 - Creates persistent vector database
 - Includes verification and statistics
 
-**Chat Interface** (`office_expert_chat.py`)
+**Chat Interface** 
 - CLI-based conversation interface
 - Semantic search for relevant context
 - Natural language generation with GPT
@@ -85,7 +85,7 @@ The system prompt includes explicit safeguards against attempts to override the 
 ## Installation
 
 ```bash
-pip install chromadb openai python-dotenv pandas tqdm
+pip install -r requirements.txt
 ```
 
 Create a `.env` file with your OpenAI API key:
@@ -97,18 +97,24 @@ OPENAI_API_KEY=sk-your-key-here
 
 **Process transcripts into RAG format:**
 ```bash
-python transcript_to_rag.py
+python TranscriptToRagProcessor.py
 ```
 
 **Load data into ChromaDB (one-time setup):**
 ```bash
-python load_data_to_chromadb.py
+python LoadDataToChromaDB.py
 ```
 
 **Start chatting:**
 ```bash
-python office_expert_chat.py
+python OfficeExpertChat.py
 ```
+
+**OR**
+```bash
+python OfficeExpertChat.py --gradio
+```
+**If want to use a chat interface**
 
 ## Cost Considerations
 
