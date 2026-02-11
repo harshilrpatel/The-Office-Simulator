@@ -1,0 +1,25 @@
+#Data collection requirements for The Office Simulator POC
+
+#Web scrapping
+requests==2.31.0
+beautifulsoup4==4.12.3
+lxml==5.1.0
+
+#Data processing
+pandas==2.2.0
+numpy==1.26.3
+
+#optional: for async scraping (faster)
+aiohttp==3.9.3
+asyncio==3.4.3
+
+#Utilities
+python-dotenv==1.0.0
+tqdm==4.66.1
+
+#For testing
+pytest==8.0.0
+
+#ChromaDB and openai
+chromadb
+openai
