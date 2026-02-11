@@ -2,9 +2,6 @@
 The Office Expert - CLI Chatbot with RAG
 
 A chatbot that answers questions about The Office using ChromaDB and OpenAI.
-
-Usage:
-    python office_expert_chat.py
 """
 
 import os
@@ -13,6 +10,7 @@ from chromadb.utils import embedding_functions
 from openai import OpenAI
 from dotenv import load_dotenv
 from typing import List, Dict
+import gradio as gr
 
 
 class OfficeExpert:
@@ -291,8 +289,8 @@ Please provide a helpful and accurate answer based on the dialogue context above
                 print(f"\nError: {e}")
 
 
-def main():
-    """Main entry point"""
+def mainCLI():
+    """Main entry point with CLI interface"""
     try:
         # Initialize expert
         expert = OfficeExpert(
@@ -313,5 +311,51 @@ def main():
         traceback.print_exc()
 
 
+def mainChatInterface():
+    """Main entry for Chat Interface using Gradio"""
+    try:
+        #Initialize expert
+        expert = OfficeExpert(
+            db_path="./chroma_db",
+            collection_name="office_dialogues",
+            model = "gpt-4o-mini"
+        )
+        
+        def respond(message, history):
+            """Gradio chat function"""
+            try:
+                response = expert.ask(message, show_context=False)
+
+                if not response or response == "":
+                    return "Sorry, There was an error generating a response. Please try again!"
+
+                return response
+            
+            except Exception as e:
+                print(f"Error in response: {e}")
+                return f"Something went wrong. Error : {str(e)}"
+
+        chat_interface = gr.ChatInterface(
+            fn=respond,
+            title="The Office Expert",
+            description="Ask me anything about The Office!",
+            examples=[
+                "What does Michael think about Toby?",
+                "Tell me about Jim's pranks on Dwight",
+                "What happened in The Dinner Party episode?",
+            ]
+        )   
+
+        chat_interface.launch(share=False)
+
+    except Exception as e:
+        print(f"Exception occured: {e}")
+
+
 if __name__ == "__main__":
-    main()
+    import sys
+
+    if len(sys.argv) > 1 and sys.argv[1] == "--gradio":
+        mainChatInterface()
+    else:
+        mainCLI()

@@ -23,3 +23,6 @@ pytest==8.0.0
 #ChromaDB and openai
 chromadb
 openai
+
+#Chat Interface
+gradio
